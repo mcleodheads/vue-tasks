@@ -1,10 +1,25 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
+    <router-link to="/logout" v-on:click="handleLogout">Logout</router-link>
   </div>
   <router-view/>
 </template>
+
+<script>
+import router from './router';
+
+export default {
+  methods: {
+    handleLogout(e) {
+      e.preventDefault();
+      const { dispatch } = this.$store;
+      dispatch('authentication/logout');
+      router.push('/');
+    },
+  },
+};
+</script>
 
 <style>
 #app {
@@ -17,6 +32,8 @@
 
 #nav {
   padding: 30px;
+  display: flex;
+  justify-content: space-between;
 }
 
 #nav a {
