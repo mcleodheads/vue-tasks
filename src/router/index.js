@@ -7,12 +7,9 @@ const routes = [
     component: () => import('../views/Authorization.vue'),
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue'),
-    meta: {
-      requiresAuth: true,
-    },
+    path: '/table',
+    name: 'Table',
+    component: () => import('../views/Table.vue'),
   },
 ];
 

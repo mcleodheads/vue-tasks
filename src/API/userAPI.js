@@ -13,13 +13,8 @@ async function loginUser(login, password) {
   }, { withCredentials: true });
 }
 
-function logout() {
-  localStorage.removeItem('token');
-}
-
 const userService = {
   loginUser,
-  logout,
 };
 
 export default userService;

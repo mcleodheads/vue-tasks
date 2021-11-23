@@ -1,14 +1,13 @@
-import userService from '../API/indexAPI';
+import userService from '../API/userAPI';
 import router from '../router';
-
-const initialState = {
-  user: {},
-  isAuth: false,
-};
 
 const authentication = {
   namespaced: true,
-  initialState,
+  state: {
+    user: null,
+    isAuth: !!localStorage.getItem('token'),
+    isLoading: false,
+  },
   actions: {
     login({ dispatch, commit }, { username, password }) {
       commit('loginRequest', { username });
@@ -16,7 +15,7 @@ const authentication = {
         .then(
           (user) => {
             commit('loginSuccess', user);
-            router.push('/about');
+            router.push('/table');
           },
           (error) => {
             commit('loginFailure', error);
@@ -25,27 +24,28 @@ const authentication = {
         );
     },
     logout({ commit }) {
-      userService.logout();
+      localStorage.removeItem('token');
       commit('logout');
     },
   },
   mutations: {
-    loginRequest(state, user) {
-      state.user = user;
+    loginRequest(state) {
+      state.isLoading = true;
     },
     loginSuccess(state, user) {
       state.isAuth = true;
+      state.isLoading = false;
       localStorage.setItem('token', user.data.accessToken);
-      state.user = user;
     },
-    loginFailure(state) {
-      state.isAuth = false;
-      state.user = null;
+    loginFailure() {
     },
     logout(state) {
       state.isAuth = false;
       state.user = null;
     },
+  },
+  getters: {
+    isAuth: (state) => state.isAuth,
   },
 };
 
