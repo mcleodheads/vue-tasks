@@ -37,6 +37,20 @@ const tableData = {
           },
         );
     },
+
+    getDataById({ dispatch, commit }, { name, id }) {
+      commit('getDataByIdRequest', { name, id });
+      tableAPIs.getDataById(name, id)
+        .then(
+          (data) => {
+            commit('fetchingSuccess', data);
+          },
+          (error) => {
+            commit('fetchingFailed', error);
+            dispatch('alert/error', error, { root: true });
+          },
+        );
+    },
   },
 
   mutations: {
@@ -45,7 +59,7 @@ const tableData = {
     },
     categoriesFetchingSuccess(state, data) {
       state.isLoading = false;
-      state.configCategories = data.data.dictionaries;
+      state.configCategories = data.data;
     },
     categoriesFetchingFail(state, error) {
       state.error = error;
@@ -62,6 +76,17 @@ const tableData = {
     searchFailed(state, error) {
       state.error = error;
       state.isLoading = false;
+    },
+
+    getDataByIdRequest(state) {
+      state.isLoading = true;
+    },
+    fetchingSuccess(state) {
+      state.isLoading = false;
+    },
+    fetchingFailed(state, error) {
+      state.isLoading = false;
+      state.error = error;
     },
   },
   getters: {},

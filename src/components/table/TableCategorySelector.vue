@@ -1,7 +1,6 @@
 <template>
   <select class="selector" @change="categoryHandler" >
-    <option value="null">Chose type</option>
-    <option v-bind:key="category.name" v-for="category in configCategories">
+    <option v-bind:key="category.name" v-for="category in configCategories.dictionaries">
       {{category.name}}
     </option>
   </select>
@@ -12,9 +11,7 @@ export default {
   data() {
     return {};
   },
-  props: {
-
-  },
+  props: {},
   mounted() {
     const { dispatch } = this.$store;
     dispatch('tableData/getConfigCategories');

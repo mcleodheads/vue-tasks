@@ -1,31 +1,51 @@
 <template>
   <div class="table-content-wrapper">
     <div class="selector-wrapper">
-      <category-selector @category-selector="categoryHandler"/>
+      <table-category-selector @category-selector="categoryHandler"/>
     </div>
-    <table-content v-if="categoryHeader !== ''" :categoryHeader="categoryHeader"/>
+    <table-content
+      @modal-open="modalOpen"
+      v-if="categoryHeader !== ''"
+      :categoryHeader="categoryHeader"
+    />
+  </div>
+  <div v-if="isModalOpen">
+    <table-modal :header="categoryHeader" :field="field" :close="close" ></table-modal>
   </div>
 </template>
 
 <script >
 import TableContent from '../components/table/TableContent.vue';
-import CategorySelector from '../components/table/CategorySelector.vue';
+import TableCategorySelector from '../components/table/TableCategorySelector.vue';
+import TableModal from '../components/table/TableModal.vue';
 
 export default {
   data() {
     return {
       categoryHeader: '',
+      isModalOpen: false,
+      field: {},
     };
   },
   methods: {
     categoryHandler(value) {
       this.categoryHeader = value;
     },
+    modalOpen(item) {
+      this.$emit('modal-open', item);
+      this.isModalOpen = true;
+      this.field = item;
+    },
+    close() {
+      this.isModalOpen = false;
+    },
   },
   components: {
     TableContent,
-    CategorySelector,
+    TableCategorySelector,
+    TableModal,
   },
+
 };
 </script>
 
@@ -34,6 +54,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  margin: 10px;
 }
 .selector-wrapper {
   width: 100%;

@@ -1,45 +1,35 @@
 <template>
-    <table class="table-bordered">
-      <thead class="table-header">
-      <tr
-        v-bind:key="items"
-        v-for="items in tableDataHeaders"
-        class="table-header-row">
-        <td
-          v-for="item in items"
-          v-bind:key="item"
-          class="table-header-cell">
-          {{item}}
-        </td>
-      </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-bind:key="items"
-          v-for="items in tableDataItems"
-        >
-          <td
-            v-for="item in items"
-            v-bind:key="item"
-          >
-            {{ item?.name || item }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="table-wrapper">
+    <vue-good-table
+      :columns="Object
+      .values(this.tableDataHeaders[0])
+      .map((header) => ({ label: header, field: header }))"
+      :rows="this.tableDataItems
+      || this.tableDataHeaders[0].map((header) => this.tableDataItems
+      .map((item) => item[header]))"
+      v-on:row-click="modalOpen()"
+      :search-options="{ enabled: true }"
+      :sort-options="{ enabled: false }"
+      :line-numbers="true"
+    />
+  </div>
 </template>
 
 <script>
+import { VueGoodTable } from 'vue-good-table-next';
+
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   props: {
     categoryHeader: {
       type: String,
       required: true,
     },
+  },
+  components: {
+    VueGoodTable,
   },
   watch: {
     categoryHeader(val) {
@@ -49,44 +39,50 @@ export default {
       });
     },
   },
+  mounted() {
+    const { dispatch } = this.$store;
+    dispatch('tableData/getCategoriesValues', {
+      name: this.categoryHeader,
+    });
+  },
   computed: {
     tableDataValues() {
       return this.$store.state.tableData.configCategories;
     },
     tableDataHeaders() {
       const { categoryHeader } = this;
-      return this.$store.state.tableData.configCategories
+      return this.$store.state.tableData.configCategories.dictionaries
         .filter((category) => category.name === categoryHeader)
         .map((item) => item.columns
-          .map((head) => head.displayNameKey));
+          .map((head) => head.name));
     },
     tableDataItems() {
-      console.log(this.$store.state.tableData.searchingResults);
       return this.$store.state.tableData.searchingResults;
     },
   },
   methods: {
+    modalOpen(item) {
+      this.$emit('modal-open', item);
+      console.log(item);
+    },
   },
 };
 </script>
 
-<style scoped>
-.table-bordered {
+<style>
+.table-wrapper {
   margin-top: 10rem;
-  width: 100vw;
-  z-index: 2;
 }
 
-.table-header {
-  font-weight: 600;
+table {
+  width: 100%;
+  margin-top: 3rem;
 }
-
-.table-header-row {
+td {
+  border: 1px solid #d0d0d0;
+  padding: 10px;
 }
-
-.table-header-cell {
-  min-width: 250px;
-  text-align: center;
+.vgt-left-align {
+  cursor: pointer;
 }
-
 </style>
