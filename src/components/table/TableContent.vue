@@ -4,15 +4,23 @@
       :columns="Object
       .values(this.tableDataHeaders[0])
       .map((header) => ({ label: header, field: header }))"
-      :rows="this.tableDataItems
-      || this.tableDataHeaders[0].map((header) => this.tableDataItems
-      .map((item) => item[header]))"
+      :rows="
+      [...this.tableDataItems] ||
+      parseInner
+      "
       v-on:row-click="modalOpen()"
       :search-options="{ enabled: true }"
       :sort-options="{ enabled: false }"
       :line-numbers="true"
-    />
+    >
+      <template #table-row="props">
+        <span v-if="props.row[props.column.field]">
+          {{props.row[props.column.field]?.name || props.row[props.column.field]}}
+        </span>
+      </template>
+    </vue-good-table>
   </div>
+  <button @click="parseInner">asd</button>
 </template>
 
 <script>
@@ -64,6 +72,21 @@ export default {
     modalOpen(item) {
       this.$emit('modal-open', item);
       console.log(item);
+    },
+    parseInner() {
+      // const res = [];
+      // [...this.tableDataItems].map((row) => Object
+      //   .keys(row).map((key) => {
+      //     if (row[key] && row && row[key].name) {
+      //       res.push({ [key]: row[key].name });
+      //     }
+      //   }));
+      // eslint-disable-next-line no-nested-ternary
+      [...this.tableDataItems].map((row) => Object.values(row).map((item) => (typeof item === 'object'
+        ? item
+          ? console.log(item.name)
+          : console.log(item)
+        : console.log(item))));
     },
   },
 };
