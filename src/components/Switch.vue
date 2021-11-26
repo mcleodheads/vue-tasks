@@ -41,12 +41,10 @@ export default {
   margin-left: 12px;
   margin-right: 12px;
   color: #1a202c;
-  /* Show an ellipsis if the text takes more than one line */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* Visually hide the checkbox input */
 .input {
   position: absolute;
   width: 1px;
@@ -82,11 +80,9 @@ export default {
 .switch::before {
   content: "";
   position: absolute;
-  /* Move a little bit the inner circle to the right */
   left: 1px;
   height: calc(var(--switch-size) - 4px);
   width: calc(var(--switch-size) - 4px);
-  /* Make the inner circle fully rounded */
   border-radius: 9999px;
   background-color: white;
   border: 2px solid var(--light-gray);
@@ -97,7 +93,6 @@ export default {
 }
 .input:checked + .switch::before {
   border-color: var(--teal);
-  /* Move the inner circle to the right */
   transform: translateX(
     calc(var(--switch-container-width) - var(--switch-size))
   );

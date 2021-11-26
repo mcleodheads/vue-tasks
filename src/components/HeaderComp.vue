@@ -1,23 +1,31 @@
 <template>
   <div id="nav" v-if="isAuth">
     <router-link to="/table">Table</router-link>
+    <div>
+      {{$t('exit')}}
+    </div>
     <div class="header-right-side">
       <div class="switch-container">
-        <Switch checked :onChange="languageChange"/>
+<!--        <Switch v-model="$root.$i18n.locale" checked :onChange="languageChange"/>-->
+        <select @change="languageChange" v-model="$i18n.locale">
+          <option value="ru">Ру</option>
+          <option value="en">Eng</option>
+        </select>
       </div>
-      <router-link to="#" v-on:click="handleLogout">Logout</router-link>
+      <router-link to="#" v-on:click="handleLogout">{{$t('exit')}}</router-link>
     </div>
+  </div>
+  <div>
   </div>
 </template>
 
 <script>
 import router from '../router';
-import Switch from './Switch.vue';
 
 export default {
-  components: { Switch },
   data() {
     return {
+      lang: 'en',
     };
   },
   methods: {
@@ -28,14 +36,21 @@ export default {
       router.push('/');
     },
     languageChange($event) {
-      this.$emit('update:checked', $event.target.checked);
-      console.log($event.target.checked);
+      const { dispatch } = this.$store;
+      dispatch('localization/getLocalization', $event.target.value);
     },
   },
   computed: {
     isAuth() {
       return this.$store.state.authentication.isAuth;
     },
+    getLanguageValue() {
+      return this.$store.state.localization.chosenLanguage;
+    },
+  },
+  mounted() {
+    const { dispatch } = this.$store;
+    dispatch('localization/getLocalization', this.lang);
   },
 };
 </script>

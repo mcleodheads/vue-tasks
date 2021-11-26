@@ -1,14 +1,17 @@
 <template>
-  <div class="table-wrapper">
+  <div class="table-wrapper" v-if="!tableIsLoading">
     <vue-good-table
       :columns="Object
       .values(this.tableDataHeaders[0])
       .map((header) => ({
-      label: header,
+      label: header.toUpperCase(),
       field: header,
+      thClass: 'custom-th-class',
+      tdClass: 'custom-td-class',
       }))"
       :rows="[...this.tableDataItems]"
-      :sort-options="{ enabled: false }">
+      :sort-options="{enabled: false}"
+      :search-options="{enabled: false}">
       <template #table-row="props">
         <div
           @click="modalOpen(props.row)"
@@ -73,6 +76,9 @@ export default {
         .filter((category) => category.name === categoryHeader)
         .map((item) => item.columns);
     },
+    tableIsLoading() {
+      return this.$store.state.tableData.isLoading;
+    },
   },
   methods: {
     modalOpen() {
@@ -87,7 +93,24 @@ export default {
 </script>
 
 <style>
+.custom-th-class {
+  color: #1a202c;
+}
+
+.custom-td-class {
+  min-width: 200px;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.vgt-input {
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #c4c4c4;
+}
+
 .table-wrapper {
+  padding: 10px;
   margin-top: 10rem;
 }
 
@@ -97,8 +120,8 @@ table {
 }
 
 td {
-  border: 1px solid #828181;
-  background-color: #a7e2e2;
+  border: 1px solid #c4c4c4;
+  background-color: #fcfcfc;
   cursor: pointer;
 }
 

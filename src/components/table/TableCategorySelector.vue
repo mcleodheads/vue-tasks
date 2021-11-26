@@ -1,7 +1,10 @@
 <template>
   <select class="selector" @change="categoryHandler" >
     <option selected class="empty-option" disabled>Chose category</option>
-    <option v-bind:key="category.name" v-for="category in configCategories.dictionaries">
+    <option
+      v-bind:key="category.name"
+      class="option"
+      v-for="category in configCategories.dictionaries">
       {{category.name}}
     </option>
   </select>
@@ -42,9 +45,16 @@ export default {
   z-index: 5;
   width: fit-content;
   background: #ffffff;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #c4c4c4;
 }
 
 .empty-option {
   color: #8b8b8b;
+}
+
+.option {
+  color: #1a202c;
 }
 </style>

@@ -13,7 +13,6 @@ const tableData = {
     },
   },
   actions: {
-
     getConfigCategories({ dispatch, commit }) {
       commit('getCategoriesRequest');
       tableAPIs.getConfigurationCategoriesAPI()
