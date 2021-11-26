@@ -3,24 +3,22 @@
     <vue-good-table
       :columns="Object
       .values(this.tableDataHeaders[0])
-      .map((header) => ({ label: header, field: header }))"
-      :rows="
-      [...this.tableDataItems] ||
-      parseInner
-      "
-      v-on:row-click="modalOpen()"
-      :search-options="{ enabled: true }"
-      :sort-options="{ enabled: false }"
-      :line-numbers="true"
-    >
+      .map((header) => ({
+      label: header,
+      field: header,
+      }))"
+      :rows="[...this.tableDataItems]"
+      :sort-options="{ enabled: false }">
       <template #table-row="props">
-        <span v-if="props.row[props.column.field]">
-          {{props.row[props.column.field]?.name || props.row[props.column.field]}}
-        </span>
+        <div
+          @click="modalOpen(props.row)"
+          v-if="props.row[props.column.field]"
+          class="inner-cell">
+          {{ props.row[props.column.field]?.name || props.row[props.column.field] }}
+        </div>
       </template>
     </vue-good-table>
   </div>
-  <button @click="parseInner">asd</button>
 </template>
 
 <script>
@@ -28,7 +26,9 @@ import { VueGoodTable } from 'vue-good-table-next';
 
 export default {
   data() {
-    return {};
+    return {
+      dataObj: {},
+    };
   },
   props: {
     categoryHeader: {
@@ -67,27 +67,21 @@ export default {
     tableDataItems() {
       return this.$store.state.tableData.searchingResults;
     },
+    tableDataTypes() {
+      const { categoryHeader } = this;
+      return this.$store.state.tableData.configCategories.dictionaries
+        .filter((category) => category.name === categoryHeader)
+        .map((item) => item.columns);
+    },
   },
   methods: {
-    modalOpen(item) {
-      this.$emit('modal-open', item);
-      console.log(item);
+    modalOpen() {
+      this.dataObj = this.tableDataTypes;
+      this.$emit('modal-open', this.dataObj[0]);
     },
-    parseInner() {
-      // const res = [];
-      // [...this.tableDataItems].map((row) => Object
-      //   .keys(row).map((key) => {
-      //     if (row[key] && row && row[key].name) {
-      //       res.push({ [key]: row[key].name });
-      //     }
-      //   }));
-      // eslint-disable-next-line no-nested-ternary
-      [...this.tableDataItems].map((row) => Object.values(row).map((item) => (typeof item === 'object'
-        ? item
-          ? console.log(item.name)
-          : console.log(item)
-        : console.log(item))));
-    },
+  },
+  emits: {
+    'data-obj': null,
   },
 };
 </script>
@@ -101,11 +95,21 @@ table {
   width: 100%;
   margin-top: 3rem;
 }
+
 td {
-  border: 1px solid #d0d0d0;
-  padding: 10px;
-}
-.vgt-left-align {
+  border: 1px solid #828181;
+  background-color: #a7e2e2;
   cursor: pointer;
 }
+
+.inner-cell {
+  flex: 1;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 5px;
+}
+
 </style>

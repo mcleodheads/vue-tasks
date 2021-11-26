@@ -7,6 +7,10 @@ const tableData = {
     error: '',
     configCategories: [],
     searchingResults: [],
+    modalData: {
+      data: [],
+      isLoading: false,
+    },
   },
   actions: {
 
@@ -81,8 +85,9 @@ const tableData = {
     getDataByIdRequest(state) {
       state.isLoading = true;
     },
-    fetchingSuccess(state) {
+    fetchingSuccess(state, data) {
       state.isLoading = false;
+      state.modalData.data = data.data;
     },
     fetchingFailed(state, error) {
       state.isLoading = false;
