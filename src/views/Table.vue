@@ -1,7 +1,9 @@
 <template>
   <div class="table-content-wrapper">
     <div class="selector-wrapper">
-      <table-category-selector @category-selector="categoryHandler"/>
+      <table-category-selector
+        :categoryHeader="categoryHeader"
+        @category-selector="categoryHandler"/>
     </div>
     <table-content
       @modal-open="modalOpen"
@@ -30,6 +32,7 @@ export default {
   methods: {
     categoryHandler(value) {
       this.categoryHeader = value;
+      console.log(this.categoryHeader);
     },
     modalOpen(item) {
       this.$emit('modal-open', item);
@@ -45,7 +48,6 @@ export default {
     TableCategorySelector,
     TableModal,
   },
-
 };
 </script>
 

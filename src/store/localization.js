@@ -6,7 +6,7 @@ const localization = {
     localizationLib: {},
     isLoading: false,
     error: '',
-    chosenLanguage: 'en',
+    chosenLanguage: 'ru',
   },
   actions: {
     getLocalization({ dispatch, commit }, language) {
@@ -30,7 +30,6 @@ const localization = {
     localizationFetchSuccess(state, { data }) {
       state.isLoading = false;
       state.localizationLib = data;
-      console.log(data);
     },
     localizationFetchingFail(state, error) {
       state.isLoading = false;

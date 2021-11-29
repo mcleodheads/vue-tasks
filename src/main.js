@@ -1,42 +1,24 @@
 import { createApp } from 'vue';
-import { createI18n } from 'vue-i18n';
-import axios from 'axios';
-
+// import { createI18n, I18n } from 'vue-i18n';
+// import axios from 'axios';
 import App from './App.vue';
-import router from './router';
+// import router from './router';
+// eslint-disable-next-line import/no-cycle
 import store from './store';
-import localization from './store/localization';
+// eslint-disable-next-line import/no-named-as-default
+import setupRouter from './router';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FontAwesomeIcon from './plugins/font-awesome';
+import { setupI18n } from './i18n';
 
-export const i18n = createI18n({
-  locale: localization.state.chosenLanguage,
-  messages: localization.state.localizationLib,
+const i18n = setupI18n({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: {},
 });
-
-const loadedLanguages = [];
-
-function setI18nLanguage(lang) {
-  i18n.locale = lang;
-  axios.defaults.headers.common['Accept-Language'] = lang;
-  document.querySelector('html').setAttribute('lang', lang);
-  return lang;
-}
-
-export function loadLanguageAsync(lang) {
-  if (loadedLanguages.includes(lang)) {
-    if (i18n.locale !== lang) setI18nLanguage(lang);
-    return Promise.resolve();
-  }
-  return axios.get(`/api/translation/GetForLangType/${lang}`).then((response) => {
-    const res = response.data;
-    loadedLanguages.push(lang);
-    i18n.message = res;
-    setI18nLanguage(lang);
-  });
-}
+const router = setupRouter(i18n);
 
 createApp(App)
   .use(store)
@@ -45,7 +27,4 @@ createApp(App)
   .component('font-awesome-icon', FontAwesomeIcon)
   .mount('#app');
 
-// router.js
-router.beforeEach((to, from, next) => {
-  loadLanguageAsync(localization.state.chosenLanguage).then(() => next());
-});
+export default router;

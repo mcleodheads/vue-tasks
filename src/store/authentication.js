@@ -1,5 +1,4 @@
 import userService from '../API/userAPI';
-import router from '../router';
 
 const authentication = {
   namespaced: true,
@@ -15,7 +14,6 @@ const authentication = {
         .then(
           (user) => {
             commit('loginSuccess', user);
-            router.push('/table');
           },
           (error) => {
             commit('loginFailure', error);

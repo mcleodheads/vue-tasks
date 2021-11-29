@@ -1,11 +1,13 @@
 <template>
-  <select class="selector" @change="categoryHandler" >
-    <option selected class="empty-option" disabled>Chose category</option>
+  <select class="selector" @change="categoryHandler" v-model="currentHeader">
+    <option selected class="empty-option" disabled>{{$t('Permission.FieldsSettings')}}</option>
     <option
-      v-bind:key="category.name"
+      :key="category.name"
       class="option"
+      :value="category.name"
       v-for="category in configCategories.dictionaries">
-      {{category.name}}
+      {{$t(category.name)}}
+<!--      {{category.name}}-->
     </option>
   </select>
 </template>
@@ -13,16 +15,16 @@
 <script>
 export default {
   data() {
-    return {};
-  },
-  props: {},
-  mounted() {
-    const { dispatch } = this.$store;
-    dispatch('tableData/getConfigCategories');
+    return {
+      currentHeader: '',
+    };
   },
   computed: {
     configCategories() {
       return this.$store.state.tableData.configCategories;
+    },
+    tableDataHeaders() {
+      return this.$store.state.tableData.configCategories.dictionaries;
     },
   },
   emits: {
@@ -31,7 +33,12 @@ export default {
   methods: {
     categoryHandler($event) {
       this.$emit('category-selector', $event.target.value);
+      console.log($event.target.value);
     },
+  },
+  mounted() {
+    const { dispatch } = this.$store;
+    dispatch('tableData/getConfigCategories');
   },
 };
 

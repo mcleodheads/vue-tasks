@@ -1,18 +1,24 @@
 <template>
   <div id="nav" v-if="isAuth">
-    <router-link to="/table">Table</router-link>
-    <div>
-      {{$t('exit')}}
-    </div>
+    <router-link :to="{ name: 'Table', params: { locale } }">Table</router-link>
+    <router-link :to="{ name: 'Home', params: { locale } }">Home</router-link>
     <div class="header-right-side">
       <div class="switch-container">
-<!--        <Switch v-model="$root.$i18n.locale" checked :onChange="languageChange"/>-->
-        <select @change="languageChange" v-model="$i18n.locale">
-          <option value="ru">Ру</option>
-          <option value="en">Eng</option>
-        </select>
+        <form class="language">
+          <select id="locale-select" v-model="currentLocale">
+            <option
+              v-for="optionLocale in SUPPORT_LOCALES"
+              :key="optionLocale"
+              :value="optionLocale"
+            >
+              {{ optionLocale }}
+            </option>
+          </select>
+        </form>
       </div>
-      <router-link to="#" v-on:click="handleLogout">{{$t('exit')}}</router-link>
+      <router-link to="#" v-on:click="handleLogout">
+        {{ t('exit') }}
+      </router-link>
     </div>
   </div>
   <div>
@@ -20,20 +26,41 @@
 </template>
 
 <script>
-import router from '../router';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { ref, watch } from 'vue';
+
+// eslint-disable-next-line import/extensions
+import { SUPPORT_LOCALES } from '../i18n.js';
+import router from '../main';
 
 export default {
-  data() {
+  setup() {
+    const setupRouter = useRouter();
+    const { t, locale } = useI18n();
+    const currentLocale = ref(locale.value);
+    watch(setupRouter.currentRoute, (route) => {
+      currentLocale.value = route.params.locale;
+    });
+
+    watch(currentLocale, (val) => {
+      setupRouter.push({
+        name: setupRouter.currentRoute.value.name,
+        params: { locale: val },
+      });
+    });
+
     return {
-      lang: 'en',
+      t, locale, currentLocale, SUPPORT_LOCALES,
     };
   },
   methods: {
     handleLogout(e) {
       e.preventDefault();
       const { dispatch } = this.$store;
+      const { locale } = router.currentRoute.value.params;
       dispatch('authentication/logout');
-      router.push('/');
+      router.push(`/${locale}`);
     },
     languageChange($event) {
       const { dispatch } = this.$store;

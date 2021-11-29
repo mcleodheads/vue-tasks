@@ -3,12 +3,13 @@
     <vue-good-table
       :columns="Object
       .values(this.tableDataHeaders[0])
-      .map((header) => ({
-      label: header.toUpperCase(),
+      .map((header) => {
+      return {
+      label: $t(header),
       field: header,
       thClass: 'custom-th-class',
       tdClass: 'custom-td-class',
-      }))"
+      }})"
       :rows="[...this.tableDataItems]"
       :sort-options="{enabled: false}"
       :search-options="{enabled: false}">
@@ -51,6 +52,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.tableDataValues);
     const { dispatch } = this.$store;
     dispatch('tableData/getCategoriesValues', {
       name: this.categoryHeader,
@@ -85,6 +87,7 @@ export default {
       this.dataObj = this.tableDataTypes;
       this.$emit('modal-open', this.dataObj[0]);
     },
+
   },
   emits: {
     'data-obj': null,
