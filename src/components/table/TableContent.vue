@@ -12,7 +12,7 @@
       }})"
       :rows="[...this.tableDataItems]"
       :sort-options="{enabled: false}"
-      :search-options="{enabled: false}">
+      :search-options="{enabled: true}">
       <template #table-row="props">
         <div
           @click="modalOpen(props.row)"
