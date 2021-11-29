@@ -1,14 +1,16 @@
 <template>
   <div class="background" @click.stop="close">
     <div class="wrapper" @click.stop>
-      <div class="data-container">
-        <div class="data-sets" v-for="set in field" v-bind:key="set.name">
-          <modal-actions :set="set"/>
+      <div class="container">
+        <div class="data-container">
+          <div class="data-sets" v-for="set in field" v-bind:key="set.name">
+            <modal-actions :set="set"/>
+          </div>
         </div>
-      </div>
-      <div class="button-actions">
-        <button class="btn" @click="close">Submit</button>
-        <button class="btn-decline btn" @click="close">Close</button>
+        <div class="button-actions">
+          <button class="btn-decline btn" @click="close">Close</button>
+          <button class="btn" @click="close">Submit</button>
+        </div>
       </div>
     </div>
   </div>
@@ -56,6 +58,7 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
 .wrapper {
   background-color: #f6f6f6;
   width: 95%;
@@ -69,10 +72,17 @@ export default {
   right: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  flex-direction: row;
 }
 
 .btn {
@@ -103,9 +113,9 @@ export default {
 
 .button-actions {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
+  justify-content: center;
+  flex-direction: row;
 }
 
 </style>
