@@ -8,8 +8,8 @@
           </div>
         </div>
         <div class="button-actions">
-          <button class="btn-decline btn" @click="close">Close</button>
-          <button class="btn" @click="close">Submit</button>
+          <button class="btn-decline btn" @click="close">{{$t('CancelButton')}}</button>
+          <button class="btn" @click="close">{{$t('SaveButton')}}</button>
         </div>
       </div>
     </div>
@@ -78,11 +78,7 @@ export default {
 }
 
 .container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
+
 }
 
 .btn {
@@ -114,7 +110,7 @@ export default {
 .button-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   flex-direction: row;
 }
 
