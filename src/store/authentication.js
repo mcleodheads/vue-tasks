@@ -1,4 +1,6 @@
 import userService from '../API/userAPI';
+// eslint-disable-next-line import/no-cycle
+import router from '../main';
 
 const authentication = {
   namespaced: true,
@@ -34,12 +36,14 @@ const authentication = {
       state.isAuth = true;
       state.isLoading = false;
       localStorage.setItem('token', user.data.accessToken);
+      router.push('/:locale/home');
     },
     loginFailure() {
     },
     logout(state) {
       state.isAuth = false;
       state.user = null;
+      router.push('/:locale/home');
     },
   },
   getters: {

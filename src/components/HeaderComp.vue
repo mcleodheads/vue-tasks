@@ -32,7 +32,6 @@ import { ref, watch } from 'vue';
 
 // eslint-disable-next-line import/extensions
 import { SUPPORT_LOCALES } from '../i18n.js';
-import router from '../main';
 
 export default {
   setup() {
@@ -58,13 +57,7 @@ export default {
     handleLogout(e) {
       e.preventDefault();
       const { dispatch } = this.$store;
-      const { locale } = router.currentRoute.value.params;
       dispatch('authentication/logout');
-      router.push(`/${locale}`);
-    },
-    languageChange($event) {
-      const { dispatch } = this.$store;
-      dispatch('localization/getLocalization', $event.target.value);
     },
   },
   computed: {

@@ -30,7 +30,6 @@
 
 <script>
 import { Form, Field } from 'vee-validate';
-import router from '../main';
 
 export default {
   name: 'AuthorizationComponent',
@@ -51,7 +50,6 @@ export default {
   },
   methods: {
     handleSubmit() {
-      const { locale } = router.currentRoute.value.params;
       this.submitted = true;
       const {
         username,
@@ -63,7 +61,6 @@ export default {
           username,
           password,
         });
-        router.push(`/${locale}/home`);
       }
     },
   },
