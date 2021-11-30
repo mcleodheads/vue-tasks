@@ -32,7 +32,6 @@ export default {
   methods: {
     categoryHandler(value) {
       this.categoryHeader = value;
-      console.log(this.categoryHeader);
     },
     modalOpen(item) {
       this.$emit('modal-open', item);

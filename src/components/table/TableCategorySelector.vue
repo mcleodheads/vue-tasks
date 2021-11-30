@@ -7,7 +7,6 @@
       :value="category.name"
       v-for="category in configCategories.dictionaries">
       {{$t(category.name)}}
-<!--      {{category.name}}-->
     </option>
   </select>
 </template>
@@ -33,7 +32,6 @@ export default {
   methods: {
     categoryHandler($event) {
       this.$emit('category-selector', $event.target.value);
-      console.log($event.target.value);
     },
   },
   mounted() {

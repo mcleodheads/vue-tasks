@@ -1,6 +1,6 @@
 <template>
   <div class="single-set">
-    {{ set.name }}
+    {{ $t(set.name) }}
     <span class="set-action" v-if="set.type === 'Text'">
       <input class="def-input" type="text" :placeholder=set.name>
     </span>

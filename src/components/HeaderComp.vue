@@ -1,30 +1,3 @@
-<template>
-  <div id="nav" v-if="isAuth">
-    <router-link :to="{ name: 'Table', params: { locale } }">Table</router-link>
-    <router-link :to="{ name: 'Home', params: { locale } }">Home</router-link>
-    <div class="header-right-side">
-      <div class="switch-container">
-        <form class="language">
-          <select id="locale-select" v-model="currentLocale">
-            <option
-              v-for="optionLocale in SUPPORT_LOCALES"
-              :key="optionLocale"
-              :value="optionLocale"
-            >
-              {{ optionLocale }}
-            </option>
-          </select>
-        </form>
-      </div>
-      <router-link to="#" v-on:click="handleLogout">
-        {{ t('exit') }}
-      </router-link>
-    </div>
-  </div>
-  <div>
-  </div>
-</template>
-
 <script>
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -74,6 +47,33 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div id="nav" v-if="isAuth">
+    <router-link :to="{ name: 'Table', params: { locale } }">Table</router-link>
+    <router-link :to="{ name: 'Home', params: { locale } }">Home</router-link>
+    <div class="header-right-side">
+      <div class="switch-container">
+        <form class="language">
+          <select id="locale-select" v-model="currentLocale">
+            <option
+              v-for="optionLocale in SUPPORT_LOCALES"
+              :key="optionLocale"
+              :value="optionLocale"
+            >
+              {{ optionLocale }}
+            </option>
+          </select>
+        </form>
+      </div>
+      <router-link to="#" v-on:click="handleLogout">
+        {{ $t('exit') }}
+      </router-link>
+    </div>
+  </div>
+  <div>
+  </div>
+</template>
 
 <style scoped>
 #nav {

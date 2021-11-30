@@ -52,7 +52,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.tableDataValues);
     const { dispatch } = this.$store;
     dispatch('tableData/getCategoriesValues', {
       name: this.categoryHeader,
