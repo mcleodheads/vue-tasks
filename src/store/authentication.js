@@ -36,14 +36,14 @@ const authentication = {
       state.isAuth = true;
       state.isLoading = false;
       localStorage.setItem('token', user.data.accessToken);
-      router.push('/:locale/home');
+      router.push('/en/home');
     },
     loginFailure() {
     },
     logout(state) {
       state.isAuth = false;
       state.user = null;
-      router.push('/:locale/home');
+      router.push('/');
     },
   },
   getters: {
