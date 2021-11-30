@@ -37,6 +37,5 @@ export async function loadLocaleMessages(i18n, locale) {
   const messages = await axios.get(`/api/translation/GetForLangType/${locale}`)
     .then(getResourceMessages);
   i18n.global.setLocaleMessage(locale, messages.data);
-  // console.log(i18n.global.messages);
   return nextTick();
 }
